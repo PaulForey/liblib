@@ -22,6 +22,7 @@ typedef struct LibraryHandle {
     bstring libname;
 } LibraryHandle;
 
+/*
 typedef struct FunctionHandle {
 #ifdef _WIN32
     FARPROC func;
@@ -30,7 +31,7 @@ typedef struct FunctionHandle {
 #endif
     bstring funcname;
 } FunctionHandle;
-
+*/
 /*
  * function:    openlib
  * arguments:   LibraryHandle* h, bstring libname

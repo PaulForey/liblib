@@ -7,6 +7,7 @@
 
 LibraryHandle* lib = NULL;
 
+
 char* test_max()
 {
     int rc = 0;

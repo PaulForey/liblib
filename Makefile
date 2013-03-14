@@ -2,7 +2,7 @@
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
-	TESTPAT=*_linux_test
+	TESTPAT=*_test
 	TESTSCRIPT=./test/runtests.sh
 	TESTFLAGS=-ldl
 	PLAT_LIBS=-ldl
@@ -20,7 +20,7 @@ endif
 
 
 CFLAGS=-g -O2 -Wall -Wextra -Isrc -Iinclude $(OPTFLAGS)
-LIBS=-Linclude -lbstr $(PLAT_LIBS) $(OPTLIBS)
+LIBS=$(INCS) $(PLAT_LIBS) $(OPTLIBS)
 PREFIX?=/usr/local
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
@@ -30,11 +30,15 @@ TEST_SRC=$(wildcard test/$(TESTPAT).c)
 TEST_OBJ=$(patsubst %.c,%.o,$(TEST_SRC))
 TESTS=$(patsubst %.o,%,$(TEST_OBJ))
 
+INC_SRC=$(wildcard include/**/*.c include/*.c)
+INC_OBJ=$(patsubst %.c,%.o,$(INC_SRC))
+INCS=$(patsubst %.o,%.a,$(INC_OBJ))
+
 TARGET=build/liblib.a
 SO_TARGET=$(patsubst %.a,%$(SO_EXT),$(TARGET))
 
 # The Target Build
-all: $(TARGET) $(SO_TARGET) tests
+all: $(INCS) $(TARGET) $(SO_TARGET) tests
 
 dev: CFLAGS += -DDEBUG
 dev: all
@@ -49,6 +53,12 @@ $(SO_TARGET): $(TARGET) $(OBJECTS)
 
 build:
 	@mkdir -p build
+
+
+$(INCS): $(INC_OBJ)
+	ar rcs $@ $(INC_OBJ)
+	ranlib $@
+	
 
 
 # The Unit Tests
