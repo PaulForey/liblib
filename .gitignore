@@ -1,0 +1,9 @@
+*
+
+!*.c
+!*.h
+!*.md
+!Makefile
+!*.txt
+!*.sh
+!*.ps1
